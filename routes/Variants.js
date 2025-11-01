@@ -160,7 +160,7 @@ router.get("/products-with-variants", async (req, res) => {
 
 router.put("/variants/:id/complete", async (req, res) => {
   const { id } = req.params;
-  const { date } = req.body;
+  const { date, user_id  } = req.body;
 
   try {
     const variant = await ProductVariant.findByPk(id, {
@@ -172,7 +172,7 @@ router.put("/variants/:id/complete", async (req, res) => {
       return res.status(400).json({ error: "تم تجهيز هذا النوع مسبقًا من قبل مستخدم آخر" });
     }
 
-    const user = await User.findByPk(userId);
+    const user = await User.findByPk(user_id);
     if (!user) return res.status(404).json({ error: "المستخدم غير موجود" });
 
     variant.status = "تم التجهيز";
