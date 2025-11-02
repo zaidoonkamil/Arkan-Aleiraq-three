@@ -217,7 +217,7 @@ router.get("/preparation-logs/:date", async (req, res) => {
       },
       include: [
         { model: User, as: "user", attributes: ["id", "name"] },
-        { model: Product, as: "product", attributes: ["id", "title"] },
+        { model: Product, as: "product", attributes: ["id", "title", "images"] },
         { model: ProductVariant, as: "variant", attributes: ["id", "color", "size"] },
       ],
       order: [["createdAt", "DESC"]],
