@@ -6,9 +6,9 @@ const ProductVariant = require("./ProductVariant");
 const UserHiddenVariant = require("./UserHiddenVariants");
 const PreparationLog = require("./PreparationLog");
 
-PreparationLog.belongsTo(User, { foreignKey: "user_id", as: "user" });
-PreparationLog.belongsTo(ProductVariant, { foreignKey: "variant_id", as: "variant" });
-PreparationLog.belongsTo(Product, { foreignKey: "product_id", as: "product" });
+PreparationLog.belongsTo(User, { foreignKey: "user_id", as: "user" , onDelete: "CASCADE",});
+PreparationLog.belongsTo(ProductVariant, { foreignKey: "variant_id", as: "variant", onDelete: "CASCADE", });
+PreparationLog.belongsTo(Product, { foreignKey: "product_id", as: "product", onDelete: "CASCADE", });
 
 
 User.hasMany(UserDevice, { foreignKey: 'user_id', as: 'devices', onDelete: 'CASCADE' });
