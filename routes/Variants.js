@@ -199,21 +199,21 @@ router.put("/variants/:id/complete", async (req, res) => {
   }
 });
 
-router.get("/preparation-logs/:date", async (req, res) => {
-  const { date } = req.params;
-  const { startTime, endTime } = req.query;
-
-  const start = startTime
-      ? new Date(`${date}T${startTime}`)
-      : new Date(`${date}T00:00:00`);
-  const end = endTime
-      ? new Date(`${date}T${endTime}`)
-      : new Date(`${date}T23:59:59`);
+router.get("/preparation-logs", async (req, res) => {
+  const { startDate, endDate, startTime, endTime } = req.query;
 
   try {
+    const start = startDate
+      ? new Date(`${startDate}T${startTime || "00:00:00"}`)
+      : new Date();
+
+    const end = endDate
+      ? new Date(`${endDate}T${endTime || "23:59:59"}`)
+      : new Date(); 
+
     const logs = await PreparationLog.findAll({
-      where: { 
-        date: { [Op.gte]: start, [Op.lte]: end },
+      where: {
+        createdAt: { [Op.between]: [start, end] },
       },
       include: [
         { model: User, as: "user", attributes: ["id", "name"] },
