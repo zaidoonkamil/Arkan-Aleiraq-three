@@ -218,4 +218,33 @@ router.get("/profile", async (req, res) => {
   });
 });
 
+router.get("/users/search", async (req, res) => {
+  const { name } = req.query;
+
+  if (!name) {
+    return res.status(400).json({ error: "يرجى إدخال الاسم للبحث" });
+  }
+
+  try {
+    const users = await User.findAll({
+      where: {
+        name: {
+          [Op.like]: `%${name}%`,
+        },
+      },
+      attributes: ["id", "name", "phone", "email", "role"],
+      order: [["name", "ASC"]],
+    });
+
+    if (users.length === 0) {
+      return res.status(404).json({ message: "لم يتم العثور على مستخدمين بهذا الاسم" });
+    }
+
+    res.json(users);
+  } catch (error) {
+    console.error("❌ Error searching users:", error);
+    res.status(500).json({ error: "حدث خطأ أثناء البحث عن المستخدمين" });
+  }
+});
+
 module.exports = router;
