@@ -232,7 +232,7 @@ router.get("/users/search", async (req, res) => {
           [Op.like]: `%${name}%`,
         },
       },
-      attributes: ["id", "name", "phone", "email", "role"],
+      attributes: ["id", "name", "phone", "role"],
       order: [["name", "ASC"]],
     });
 
